@@ -20,7 +20,7 @@ export default function Footer() {
           </div>
           {footerLinks.map((group) => (
             <div key={group.heading}>
-              <h3 className="text-sm">{group.heading}</h3>
+              <h3 className="font-sans text-sm font-medium tracking-normal">{group.heading}</h3>
               <ul className="mt-4 space-y-2.5">
                 {group.links.map((link) => (
                   <li key={link}>

@@ -1,6 +1,6 @@
 /**
  * Navbar — sticky top bar with the logo, section links, theme toggle and a CTA button.
- * Mobile first: links collapse into a hamburger menu below the `md` breakpoint.
+ * Mobile first: below the `md` breakpoint the links and CTA move into a hamburger menu.
  */
 import { Menu, X } from 'lucide-react'
 import { useState } from 'react'
@@ -16,7 +16,7 @@ export default function Navbar({ theme, onToggleTheme }: { theme: Theme; onToggl
   return (
     // Translucent + blurred so content scrolls softly beneath it.
     <header className="sticky top-0 z-50 border-b border-border bg-background/70 backdrop-blur-xl">
-      <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4 sm:px-6 lg:px-8" aria-label="Main">
+      <nav className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8" aria-label="Main">
         <Logo />
 
         {/* Desktop links */}
@@ -30,11 +30,14 @@ export default function Navbar({ theme, onToggleTheme }: { theme: Theme; onToggl
           ))}
         </ul>
 
-        <div className="flex items-center gap-3">
+        {/* shrink-0 keeps the controls intact; the nav's gap-4 keeps them off the logo */}
+        <div className="flex shrink-0 items-center gap-3">
           <ThemeToggle theme={theme} onToggle={onToggleTheme} />
-          <Button href="#pricing" className="hidden sm:inline-flex">
-            Get started
-          </Button>
+          {/* Desktop CTA. Visibility lives on a wrapper because Button always sets
+              `inline-flex`, which would override a `hidden` class passed to it. */}
+          <div className="hidden md:block">
+            <Button href="#pricing">Get started</Button>
+          </div>
           {/* Mobile menu button */}
           <button
             type="button"

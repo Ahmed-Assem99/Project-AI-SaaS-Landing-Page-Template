@@ -60,25 +60,79 @@ function SparklineVisual() {
   )
 }
 
-/** Cloud of floating integration "logos" (initial badges), each bobbing out of sync. */
+/**
+ * Simple 24×24 line icons for the integration badges. Deliberately generic (not brand
+ * logos) so the template is safe to sell and easy to re-label.
+ */
+const integrationIcons = {
+  // Chat bubble (team chat)
+  chat: <path d="M5 5h14a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-8l-4 3v-3H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Z" />,
+  // Credit card (payments)
+  payments: (
+    <>
+      <rect x="3" y="6" width="18" height="12" rx="2" />
+      <path d="M3 10h18M7 15h3" />
+    </>
+  ),
+  // Document (docs/wiki)
+  docs: (
+    <>
+      <path d="M7 3h7l4 4v14H7a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1Z" />
+      <path d="M14 3v4h4M9 12h6M9 16h6" />
+    </>
+  ),
+  // Database cylinder (SQL database)
+  database: (
+    <>
+      <ellipse cx="12" cy="6" rx="7" ry="3" />
+      <path d="M5 6v12c0 1.7 3.1 3 7 3s7-1.3 7-3V6M5 12c0 1.7 3.1 3 7 3s7-1.3 7-3" />
+    </>
+  ),
+  // Connected nodes (CRM)
+  crm: (
+    <>
+      <circle cx="12" cy="12" r="3" />
+      <circle cx="5" cy="6" r="2" />
+      <circle cx="19" cy="6" r="2" />
+      <circle cx="12" cy="20" r="2" />
+      <path d="M6.6 7.2 9.7 10M17.4 7.2 14.3 10M12 15v3" />
+    </>
+  ),
+  // Snowflake (data warehouse)
+  warehouse: <path d="M12 2v20M3.3 7l17.4 10M3.3 17 20.7 7M9 4l3 2 3-2M9 20l3-2 3 2" />,
+}
+
+/** Ring of floating integration icons around a central hub, each bobbing out of sync. */
 function IntegrationsVisual() {
   const badges = [
-    { label: 'Sl', position: 'left-[8%] top-[18%]', delay: '0s' },
-    { label: 'St', position: 'left-[38%] top-[8%]', delay: '0.6s' },
-    { label: 'No', position: 'right-[10%] top-[22%]', delay: '1.2s' },
-    { label: 'Pg', position: 'left-[20%] bottom-[14%]', delay: '1.8s' },
-    { label: 'Hu', position: 'left-[50%] bottom-[18%]', delay: '0.3s' },
-    { label: 'Sf', position: 'right-[12%] bottom-[10%]', delay: '0.9s' },
+    { label: 'Team chat', icon: integrationIcons.chat, position: 'left-[10%] top-[16%]', delay: '0s' },
+    { label: 'Payments', icon: integrationIcons.payments, position: 'left-1/2 top-[6%] -translate-x-1/2', delay: '0.6s' },
+    { label: 'Docs', icon: integrationIcons.docs, position: 'right-[10%] top-[16%]', delay: '1.2s' },
+    { label: 'Database', icon: integrationIcons.database, position: 'left-[10%] bottom-[16%]', delay: '1.8s' },
+    { label: 'CRM', icon: integrationIcons.crm, position: 'left-1/2 bottom-[6%] -translate-x-1/2', delay: '0.3s' },
+    { label: 'Data warehouse', icon: integrationIcons.warehouse, position: 'right-[10%] bottom-[16%]', delay: '0.9s' },
   ]
   return (
     <VisualFrame>
       {badges.map((badge) => (
         <span
           key={badge.label}
-          className={`animate-float absolute grid size-10 place-items-center rounded-xl border border-border bg-surface-strong text-xs font-medium ${badge.position}`}
+          title={badge.label}
+          className={`animate-float absolute grid size-10 place-items-center rounded-xl border border-border bg-surface-strong text-foreground ${badge.position}`}
           style={{ animationDelay: badge.delay }}
         >
-          {badge.label}
+          <svg
+            viewBox="0 0 24 24"
+            className="size-5"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.75"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden
+          >
+            {badge.icon}
+          </svg>
         </span>
       ))}
       {/* Center hub */}
@@ -126,19 +180,21 @@ function DashboardVisual() {
   )
 }
 
-/** Speed gauge: a half-circle dial whose needle swings back and forth. */
+/** Speed gauge: a half-circle dial whose needle swings back and forth, label centered below. */
 function SpeedVisual() {
   return (
     <VisualFrame>
-      <svg viewBox="0 0 120 72" className="h-full" aria-hidden>
-        <path d="M15 62 A45 45 0 0 1 105 62" fill="none" stroke="var(--border)" strokeWidth="8" strokeLinecap="round" />
-        <path d="M15 62 A45 45 0 0 1 82 23" fill="none" stroke="var(--accent)" strokeWidth="8" strokeLinecap="round" />
-        <g className="animate-needle" style={{ transformOrigin: '60px 62px' }}>
-          <line x1="60" y1="62" x2="60" y2="26" stroke="var(--foreground)" strokeWidth="2.5" strokeLinecap="round" />
-        </g>
-        <circle cx="60" cy="62" r="5" fill="var(--foreground)" />
-      </svg>
-      <span className="absolute bottom-3 right-4 font-serif text-xl">&lt;200ms</span>
+      <div className="flex flex-col items-center gap-1">
+        <svg viewBox="0 0 120 72" className="h-20 w-auto" aria-hidden>
+          <path d="M15 62 A45 45 0 0 1 105 62" fill="none" stroke="var(--border)" strokeWidth="8" strokeLinecap="round" />
+          <path d="M15 62 A45 45 0 0 1 82 23" fill="none" stroke="var(--accent)" strokeWidth="8" strokeLinecap="round" />
+          <g className="animate-needle" style={{ transformOrigin: '60px 62px' }}>
+            <line x1="60" y1="62" x2="60" y2="26" stroke="var(--foreground)" strokeWidth="2.5" strokeLinecap="round" />
+          </g>
+          <circle cx="60" cy="62" r="5" fill="var(--foreground)" />
+        </svg>
+        <span className="font-serif text-2xl leading-none">&lt;200ms</span>
+      </div>
     </VisualFrame>
   )
 }

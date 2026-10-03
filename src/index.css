@@ -124,13 +124,19 @@ body {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Headlines use the characterful serif (Instrument Serif only ships a regular weight). */
-h1,
-h2,
-h3 {
-  font-family: var(--font-serif);
-  font-weight: 400;
-  letter-spacing: -0.02em;
+/*
+ * Headlines use the characterful serif (Instrument Serif only ships a regular weight).
+ * Kept in the base layer so utility classes (e.g. `font-sans`, `tracking-normal`) on a
+ * specific heading can override it.
+ */
+@layer base {
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    letter-spacing: -0.02em;
+  }
 }
 
 /* Soft blurred glow blob; opacity differs per theme via --glow-opacity. */

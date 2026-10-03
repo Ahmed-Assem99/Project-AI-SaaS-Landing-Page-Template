@@ -155,5 +155,5 @@ React 19 · TypeScript · Tailwind CSS v4 · Vite · ESLint · lucide-react icon
 
 ## License
 
-<!-- Replace with the license terms you sell this template under. -->
-See the license included with your purchase.
+Single-buyer license: use it in unlimited personal and client projects, but don't resell or
+redistribute the template itself. See [LICENSE.md](LICENSE.md) for the full terms.
